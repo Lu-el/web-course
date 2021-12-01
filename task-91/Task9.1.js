@@ -1,6 +1,6 @@
 'use strict'
 
-function outputNoSymbols () {
+function outputNoSymbols() {
     let input = document.querySelector('.btn');
     cutExtraSymbols(input.value);
     let div = document.createElement('div');
@@ -9,17 +9,17 @@ function outputNoSymbols () {
     document.body.append(div);
 };
 
-function cutExtraSymbols (userString) {
+function cutExtraSymbols(userString) {
   let noExtraSymbols = Array.from(userString);
   for (let x=0; x <= (userString.length-1); x++){
-      let doubleSymbol = getDoubleSymbols (userString);
+      let doubleSymbol = getDoubleSymbols(userString);
       if ( doubleSymbol.includes( userString[x].toLowerCase()) ) {
         noExtraSymbols.splice(x, 1, '');
       }
   } return  noExtraSymbols.join('');
 };
 
-function getDoubleSymbols (userString) {
+function getDoubleSymbols(userString) {
   const cutedMarks = cutMarks(userString);
   const doubleSymbols = [];
   let words = cutedMarks.split('+');
@@ -40,5 +40,5 @@ function cutMarks(userString) {
     if ( marks.includes( userString[k]) ) {
       stringNoMarks.splice(k, 1, '+');
       } 
-    } return stringNoMarks = stringNoMarks.join('') ;
+    } return stringNoMarks.join('');
 };
