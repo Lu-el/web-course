@@ -1,50 +1,44 @@
 'use strict'
 
-let input = document.querySelector('.btn');
-console.log(input.value);
-console.log(onlySpace (input.value));
-console.log(indexInCase(input.value));
-console.log(cutExtraSymbols(input.value));
-
-function lastVariant () {
+function outputNoSymbols () {
     let input = document.querySelector('.btn');
     cutExtraSymbols(input.value);
     let div = document.createElement('div');
-    div.className = "task91";
+    div.className = "solution";
     div.innerHTML = `Решение: ${cutExtraSymbols(input.value)}`;
     document.body.append(div);
 };
 
-function cutExtraSymbols (stroka) {
-  let newStr = Array.from(stroka);
-  for (let x=0; x <= (stroka.length-1); x++){
-      let massive1 = indexInCase (stroka);
-      if ( massive1.includes( stroka[x].toLowerCase()) ) {
-          newStr.splice(x, 1, '');
+function cutExtraSymbols (userString) {
+  let noExtraSymbols = Array.from(userString);
+  for (let x=0; x <= (userString.length-1); x++){
+      let doubleSymbol = getDoubleSymbols (userString);
+      if ( doubleSymbol.includes( userString[x].toLowerCase()) ) {
+        noExtraSymbols.splice(x, 1, '');
       }
-  } return  newStr.join('');
+  } return  noExtraSymbols.join('');
 };
 
-function indexInCase (str2) {
-  let lineOf = onlySpace(str2);
-  let ready = [];
-  let strWords = lineOf.split('+');
-    for (let y=0; y <= (strWords.length-1); y++) {
-      let strSymbols = strWords[y].toLowerCase(); 
-      for (let i=0; i <= (strSymbols.length-1); i++){ 
-        if ( strSymbols.lastIndexOf(strSymbols[i]) !== strSymbols.indexOf(strSymbols[i])) {
-          ready.push( strSymbols[i].toLowerCase() );
+function getDoubleSymbols (userString) {
+  const cutedMarks = cutMarks(userString);
+  const doubleSymbols = [];
+  let words = cutedMarks.split('+');
+    for (let y=0; y <= (words.length-1); y++) {
+      let smallWords = words[y].toLowerCase(); 
+      for (let i=0; i <= (smallWords.length-1); i++){ 
+        if ( smallWords.lastIndexOf(smallWords[i]) !== smallWords.indexOf(smallWords[i])) {
+          doubleSymbols.push( smallWords[i].toLowerCase() );
         }
       } 
-    } return ready;
+    } return doubleSymbols;
 };
 
-function onlySpace(qwerty) {
-  let symb = ['.', ',', '?', '!', ':', ';',' ',];
-  let newStr1 = Array.from(qwerty);
-  for (let k=0; k <= (qwerty.length-1); k++){
-    if ( symb.includes( qwerty[k]) ) {
-      newStr1.splice(k, 1, '+');
+function cutMarks(userString) {
+  const marks = ['.', ',', '?', '!', ':', ';',' ',];
+  let stringNoMarks = Array.from(userString);
+  for (let k=0; k <= (userString.length-1); k++){
+    if ( marks.includes( userString[k]) ) {
+      stringNoMarks.splice(k, 1, '+');
       } 
-    } return newStr1 = newStr1.join('') ;
+    } return stringNoMarks = stringNoMarks.join('') ;
 };
