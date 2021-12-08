@@ -1,0 +1,48 @@
+.window {
+    display: inline-block; 
+    width: 150px; 
+    margin:0; 
+    
+}
+
+.buttons{
+    text-align: center;
+    display: inline-block; 
+    width: 40px;
+}
+
+.list {
+    height:150px;
+    width: 100%;
+    box-shadow: inset 2px 2px 2px rgb(82, 77, 77);
+    padding: 1px 0px;
+    margin: 0px;
+    border-width: 1px;
+    border-color: rgb(156, 152, 152);
+    border-style: solid;
+    display: inline-block; 
+    padding: 0;  
+      
+}
+
+.caption {
+    text-align: center;
+}
+
+h4 {
+    margin: 0;
+}
+
+.listElements {
+    padding: 0px 5px;
+    margin: 0;
+    list-style-type: none;
+}
+li {
+    user-select: all;
+}
+
+li::selection {
+    background-color: rgb(231, 177, 152);
+    width: 100%;
+}
