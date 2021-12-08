@@ -13,6 +13,7 @@ function moveAll(fromList, toList) {
         alert(`Нет элементов в списке`)
     }
 }
+ 
 
 function moveOne(inList) {
     let selector = document.getSelection().toString();
