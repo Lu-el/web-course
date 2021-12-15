@@ -9,32 +9,28 @@
 </head>
 <body>
     <div class="window" ><h4 class="caption">Available</h4>
-        <section class="list">
-            <ul class="listElements leftTable" id="leftTable">
-            <li>Элемент 1</li>
-            <li>Элемент 2</li>
-            <li>Элемент 3</li>
-            <li>Элемент 4</li>
-            <li>Элемент 5</li>
-            <li>Элемент 6</li>
-            
-        </ul>
-    </section>
+        <select multiple class="list listElements leftTable" id="leftTable">
+            <option>Элемент 1</option>
+            <option>Элемент 2</option>
+            <option>Элемент 3</option>
+            <option>Элемент 4</option>
+            <option>Элемент 5</option>
+            <option>Элемент 6</option>
+            <option>Элемент 7</option>
+        </select>
     </div>
     <div class="buttons">
         <section class="buttons">
         <button type='button' onclick="moveAll('leftTable','rightTable')"> >> </button>
         <button type='button' onclick="moveOne('rightTable')"> > </button>
-        <button type='button' onclick="moveOne('leftTable')"> < </button>
-        <button type='button'onclick="moveAll('rightTable','leftTable')" > << </button>
+        <button type='button' onclick="moveOne('leftTable')"> &lt; </button>
+        <button type='button' onclick="moveAll('rightTable','leftTable')" > &lt;&lt; </button>
         </section>
     </div>
     <div class="window" ><h4 class="caption">Selected</h4>
-        <section class="list">
-            <ul class="listElements rightTable" id="rightTable"></ul>
-        </section>  
-</div> 
+        <select multiple class="list listElements rightTable" id="rightTable"></select>
+    </div> 
 
-<script src="task-93.js"></script>
+    <script src="task-93.js"></script>
 </body>
 </html>

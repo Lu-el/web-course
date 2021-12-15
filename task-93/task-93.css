@@ -1,3 +1,8 @@
+body {
+    display: flex;
+    align-items: center;
+}
+
 .window {
     display: inline-block; 
     width: 150px; 
@@ -42,7 +47,7 @@ li {
     user-select: all;
 }
 
-li::selection {
+option:checked {
     background-color: rgb(231, 177, 152);
     width: 100%;
 }

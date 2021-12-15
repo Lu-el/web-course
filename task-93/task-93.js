@@ -1,12 +1,11 @@
 function moveAll(fromList, toList) { 
-    let elements = document.querySelectorAll(`ul.${fromList} > li`);
+    let elements = document.querySelectorAll(`select.${fromList} > option`);
     let searchTable = document.querySelector(`.${toList}`);
     if (elements.length) {
         for (let elem of elements) {
-            let li = document.createElement('li');
-            li.style.listStyleType = 'none';
-            li.textContent = elem.textContent;
-            searchTable.append(li);
+            let option = document.createElement('option');
+            option.textContent = elem.textContent;
+            searchTable.append(option);
             elem.remove();
         }
     } else {
@@ -16,14 +15,15 @@ function moveAll(fromList, toList) {
  
 
 function moveOne(inList) {
-    let selector = document.getSelection().toString();
-    if (selector) {
-        let searchTable = document.querySelector(`.${inList}`);
-        let li = document.createElement('li');
-        li.style.listStyleType = 'none';
-        li.innerHTML = (`${selector}`);
-        searchTable.append(li);
-        document.getSelection().deleteFromDocument();
+    let checked = document.querySelectorAll(':checked');
+    let searchTable = document.querySelector(`.${inList}`);
+    if (checked.length) {
+        for (let check of checked) {
+            let option = document.createElement('option');
+            option.textContent = check.textContent;
+            searchTable.append(option);
+            check.remove();
+        }
     } else {
         alert('Не выбран элемент')
     }
