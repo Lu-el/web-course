@@ -56,5 +56,3 @@ document.addEventListener('click', function(event) {
     changeBox(batterflyBox);
 
 });
-
-
