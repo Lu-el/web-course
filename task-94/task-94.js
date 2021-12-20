@@ -23,15 +23,15 @@ function moveSite(id) {
 
     if (i < 0 && (listOfActive.length != 1 )) {
         site.src = listOfActive[1];
-        console.log(i);
-        console.log(site.src);
+        location.hash = `#window${1}`
 
     } else if (i == 0 || i < (listOfActive.length - 1)) {
         site.src = listOfActive[i+1];
+        location.hash = `#window${i+1}`;
 
     } else {
         let btn = document.getElementsByClassName("lastbtn");
-            
+        location.hash = `#theEnd`;   
         for (let elem of btn) {
         elem.style.display = "inline-block";
         }
@@ -47,6 +47,7 @@ function moveSite(id) {
 function watchAgain(id) {
     let site = document.getElementById(id);
     site.src = listOfActive[0];  
+    location.hash = `#window0`
 
     let btn = document.getElementsByClassName("lastbtn");
     for (let elem of btn) {
@@ -96,10 +97,13 @@ function moveBack(id) {
     clearTimeout(timeoutId);
     let site = document.getElementById(id);
     let i = (listOfActive.findIndex(x => x == site.src)); 
+
     if (i <= 0) {
-        site.src = listOfActive[0]
+        site.src = listOfActive[0];
+        location.hash = `#window0`
      } else {
         site.src = listOfActive[(i-1)];  
+        location.hash = `#window${i-1}`
      }
     let btn = document.getElementsByClassName("lastbtn");
     for (let elem of btn) {
@@ -110,6 +114,17 @@ function moveBack(id) {
     for (let char of time) {
         char.style.display = "inline-block";
     }
-}
+};
 
+document.addEventListener('click', function(event) {
+    let time = event.target.closest('#stop');
+    if (!time) return;
+    clearTimeout(timeoutId);
+});
 
+document.addEventListener('click', function(event) {
+    let time = event.target.closest('#again');
+    if (!time) return;
+    clearTimeout(timeoutId);
+    moveTime();
+});
