@@ -8,32 +8,56 @@
     <link href="task-93.css" rel="stylesheet">
 </head>
 <body>
-    <div class="window" ><h4 class="caption">Available</h4>
-        <section class="list">
-            <ul class="listElements leftTable" id="leftTable">
-            <li>Элемент 1</li>
-            <li>Элемент 2</li>
-            <li>Элемент 3</li>
-            <li>Элемент 4</li>
-            <li>Элемент 5</li>
-            <li>Элемент 6</li>
-        </ul>
-    </section>
+    <div class="batterfly">
+        <div class="window" ><h4 class="caption">Available</h4>
+            <select multiple class="list listElements leftTable" id="leftTable">
+                <option>Элемент 1</option>
+                <option>Элемент 2</option>
+                <option>Элемент 3</option>
+                <option>Элемент 4</option>
+                <option>Элемент 5</option>
+                <option>Элемент 6</option>
+                <option>Элемент 7</option>
+            </select>
+        </div>
+        <div class="buttons">
+            <section class="buttons">
+            <button class="all-list" type='button' data-action="allToRight"> >> </button>
+            <button class="one-option" type='button' data-action="moveOneTorightTable"> > </button>
+            <button class="one-option" type='button' data-action="moveOneToleftTable"> &lt; </button>
+            <button class="all-list" type='button' data-action="allToLeft">  &lt;&lt; </button>
+            </section>
+        </div>
+        <div class="window" ><h4 class="caption">Selected</h4>
+            <select multiple class="list listElements rightTable" id="rightTable"></select>
+        </div> 
     </div>
-    <div class="buttons">
-        <section class="buttons">
-        <button type='button' onclick="moveAll('leftTable','rightTable')"> >> </button>
-        <button type='button' onclick="moveOne('rightTable')"> > </button>
-        <button type='button' onclick="moveOne('leftTable')"> < </button>
-        <button type='button'onclick="moveAll('rightTable','leftTable')" > << </button>
-        </section>
-    </div>
-    <div class="window" ><h4 class="caption">Selected</h4>
-        <section class="list">
-            <ul class="listElements rightTable" id="rightTable"></ul>
-        </section>  
-</div> 
 
-<script src="task-93.js"></script>
+    <div class="batterfly">
+        <div class="window" ><h4 class="caption">Available</h4>
+            <select multiple class="list listElements leftTable" id="leftTable">
+                <option>Элемент 1</option>
+                <option>Элемент 2</option>
+                <option>Элемент 3</option>
+                <option>Элемент 4</option>
+                <option>Элемент 5</option>
+                <option>Элемент 6</option>
+                <option>Элемент 7</option>
+            </select>
+        </div>
+        <div class="buttons">
+            <section class="buttons">
+            <button class="all-list" type='button' data-action="allToRight"> >> </button>
+            <button class="one-option" type='button' data-action="moveOneTorightTable"> > </button>
+            <button class="one-option" type='button' data-action="moveOneToleftTable"> &lt; </button>
+            <button class="all-list" type='button' data-action="allToLeft">  &lt;&lt; </button>
+            </section>
+        </div>
+        <div class="window" ><h4 class="caption">Selected</h4>
+            <select multiple class="list listElements rightTable" id="rightTable"></select>
+        </div> 
+    </div>
+
+    <script src="task-93.js"></script>
 </body>
 </html>
