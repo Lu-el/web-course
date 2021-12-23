@@ -11,11 +11,78 @@ function closeWindow() {
     window.close();
 }
 
+function clearBtns() {
+    let btn = document.getElementsByClassName("lastbtn");
+    for (let elem of btn) {
+        elem.style.display = "none";
+    }
+
+    let time = document.getElementsByClassName("time");
+    for (let char of time) {
+        char.style.display = "inline-block";
+    }
+}
+
+let timeoutId;
 function moveTime() {
     let delta = 10;
     let deadline = new Date(Date.now() + delta * 1000);
     initializeClock("countdown", deadline);
+    clearBtns()
 }
+
+class Router {
+    constructor({
+        pages,
+        rootSelector
+    }) {
+        this.pages = pages;
+        this.rootSelector = rootSelector;
+        this.initRouting();
+    }
+
+    findAndRenderPage = () => {
+        const pageHash = location.hash.slice(1);
+        const relatedPage = this.pages.find(page => page.hash === pageHash);
+
+        if (relatedPage == undefined) {
+            let site = document.getElementById("mainWindow");
+            let i = pageHash.slice(-1);
+                if (i >= listOfActive.length || (!i)) location.hash = this.pages[0].hash;
+            clearTimeout(timeoutId);
+            site.src = listOfActive[i];
+            return;
+        }
+
+        const rootElement = document.querySelector(this.rootSelector);
+        rootElement.innerHTML = relatedPage.render();
+    }
+
+    initRouting() {
+        window.addEventListener('hashchange', this.findAndRenderPage);
+        this.findAndRenderPage();
+    }
+}
+
+const createRouter = () => new Router({
+    pages: [
+        {
+            get hash() {
+                let site = document.getElementById("mainWindow");
+                let i = (listOfActive.findIndex(x => x == site.src));
+                return `window${i}`
+            },
+            render() {
+                let site = document.getElementById("mainWindow");
+                let i = (listOfActive.findIndex(x => x == site.src));
+                return `<div> Page ${i}</div>`
+            }
+        }
+    ],
+    rootSelector: '#root'
+});
+
+createRouter();
 
 function moveSite(id) {
     let site = document.getElementById(id);
@@ -30,8 +97,7 @@ function moveSite(id) {
         location.hash = `#window${i+1}`;
 
     } else {
-        let btn = document.getElementsByClassName("lastbtn");
-        location.hash = `#theEnd`;   
+        let btn = document.getElementsByClassName("lastbtn");  
         for (let elem of btn) {
         elem.style.display = "inline-block";
         }
@@ -47,17 +113,9 @@ function moveSite(id) {
 function watchAgain(id) {
     let site = document.getElementById(id);
     site.src = listOfActive[0];  
-    location.hash = `#window0`
+    location.hash = `#window0`;
 
-    let btn = document.getElementsByClassName("lastbtn");
-    for (let elem of btn) {
-        elem.style.display = "none";
-    }
-
-    let time = document.getElementsByClassName("time");
-    for (let char of time) {
-        char.style.display = "inline-block";
-    }
+    clearBtns();
 }
 
 function getTimeRemaining (endTime) {
@@ -71,8 +129,6 @@ function getTimeRemaining (endTime) {
         seconds: seconds,
     }
 }
-
-let timeoutId;
 
 function initializeClock(id, endTime) {
     let clock = document.getElementById(id);
@@ -99,21 +155,11 @@ function moveBack(id) {
     let i = (listOfActive.findIndex(x => x == site.src)); 
 
     if (i <= 0) {
-        site.src = listOfActive[0];
         location.hash = `#window0`
-     } else {
-        site.src = listOfActive[(i-1)];  
+     } else { 
         location.hash = `#window${i-1}`
      }
-    let btn = document.getElementsByClassName("lastbtn");
-    for (let elem of btn) {
-        elem.style.display = "none";
-    }
-
-    let time = document.getElementsByClassName("time");
-    for (let char of time) {
-        char.style.display = "inline-block";
-    }
+     clearBtns();
 };
 
 document.addEventListener('click', function(event) {
