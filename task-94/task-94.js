@@ -45,12 +45,9 @@ class Router {
         const pageHash = location.hash.slice(1);
         const relatedPage = this.pages.find(page => page.hash === pageHash);
 
-        if (relatedPage == undefined) {
-            let site = document.getElementById("mainWindow");
-            let i = pageHash.slice(-1);
-                if (i >= listOfActive.length || (!i)) location.hash = this.pages[0].hash;
+        if (!relatedPage) {
+            location.hash = this.pages[0].hash;
             clearTimeout(timeoutId);
-            site.src = listOfActive[i];
             return;
         }
 
@@ -65,20 +62,14 @@ class Router {
 }
 
 const createRouter = () => new Router({
-    pages: [
-        {
-            get hash() {
-                let site = document.getElementById("mainWindow");
-                let i = (listOfActive.findIndex(x => x == site.src));
-                return `window${i}`
-            },
-            render() {
-                let site = document.getElementById("mainWindow");
-                let i = (listOfActive.findIndex(x => x == site.src));
-                return `<div> Page ${i}</div>`
-            }
+    pages: listOfActive.map((url, index) => ({
+        get hash() {
+            return `window${index + 1}`;
+        },
+        render() {
+            return `<iframe src="${url}" name="mainWindow" frameborder="0" id="mainWindow" onload="moveTime()"></iframe>`;
         }
-    ],
+    })),
     rootSelector: '#root'
 });
 
@@ -86,35 +77,33 @@ createRouter();
 
 function moveSite(id) {
     let site = document.getElementById(id);
-    let i = (listOfActive.findIndex(x => x == site.src));
+    let i = (listOfActive.findIndex(x => x === site.src));
 
-    if (i < 0 && (listOfActive.length != 1 )) {
+    if (i < 0 && (listOfActive.length !== 1 )) {
         site.src = listOfActive[1];
-        location.hash = `#window${1}`
 
     } else if (i == 0 || i < (listOfActive.length - 1)) {
         site.src = listOfActive[i+1];
-        location.hash = `#window${i+1}`;
-
+        location.hash = `#window${i+2}`;
+        
     } else {
         let btn = document.getElementsByClassName("lastbtn");  
         for (let elem of btn) {
-        elem.style.display = "inline-block";
+            elem.style.display = "inline-block";
         }
 
         let time = document.getElementsByClassName("time");
             
         for (let char of time) {
-        char.style.display = "none";
+            char.style.display = "none";
         }
     }
 }
 
 function watchAgain(id) {
     let site = document.getElementById(id);
-    site.src = listOfActive[0];  
-    location.hash = `#window0`;
-
+    site.src = listOfActive[0]; 
+    location.hash = `#window0`
     clearBtns();
 }
 
