@@ -1,3 +1,7 @@
+html {
+    font-size: 14px;
+}
+
 .main-box {
     margin: 0 auto;
     width: 100%;
@@ -41,14 +45,14 @@
 .hidden-menu::before {
     content: "";
     display: inline-block;
-    width: 30px;
-    height: 30px;
+    width: 2.5rem;
+    height: 2.5rem;
 
     background-image: url("https://icasgames.org/wp-content/plugins/rating/img/search.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 30px;
-    background-color: white;
+    background-size: 2.5rem;
+    background-color: #ffffff;
 }
 
 .hidden-menu:checked::before {
@@ -62,14 +66,14 @@
 .btns {
     display: flex;
     flex-wrap: nowrap;
-    margin-left: 14px;
-    margin-right: 14px;
+    margin-left: 1.2rem;
+    margin-right: 1.2rem;
 
     font-family: inherit;
 }
 
 .btn {
-    margin-right: 10px;
+    margin-right: 0.8rem;
 }
 
 .btn.like {

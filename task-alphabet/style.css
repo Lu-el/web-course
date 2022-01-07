@@ -4,22 +4,24 @@
     font-family: 'Roboto', sans-serif;
 }
 
+html {
+    font-size: 16px;
+}
+
 a {
     text-decoration: none;
-    color: black;
+    color: #000000;
 }
 
 .main-box {
     margin: 0 auto;
     width: 100%;
-    max-width: 758px;
+    max-width: 699px;
 }
 
 .menu {
-    /* transform: scale(0); */
-    /* transform: translateX(-200px); */
     width: 100%;
-    margin-bottom: 12px;
+    margin-bottom: 1rem;
 
     display: inline-block;
     position: relative;
@@ -30,13 +32,13 @@ a {
 
 
 .header {
-    font-size: 24px;
-    padding: 10px 0 10px 10px;
-    border-bottom: grey 2px solid;
+    font-size: 2rem;
+    padding: 0.8rem 0 0.8rem 0.8rem;
+    border-bottom: #808080 2px solid;
 }
 
 .news{
-    padding: 10px 10px 10px 10px;
+    padding: 0.8rem;
     height: fit-content;
 }
 
@@ -46,7 +48,7 @@ a {
 }
 
 .option {
-    padding-bottom: 10px;
+    padding-bottom: 0.8rem;
 }
 
 .content {
@@ -58,35 +60,38 @@ a {
 }
 
 .artical-content {
-    margin: 0px 10px 12px 12px;
+    margin: 0px 0.8rem 1rem 1rem;
     box-shadow: 0px 2px 2px rgba(0,0,0,0.25);
 
-    max-height: 180px;
+    max-height: 15rem;
 }
 
+.caption {
+    font-size: 1.5rem;
+}
 
 .artical-text {
-    height: 80px;
-    margin: 14px;
+    height: 6.5rem;
+    margin: 1.17rem;
     overflow: hidden;
 }
 
 .hidden-menu::before {
     content: "";
     display: inline-block;
-    width: 30px;
-    height: 30px;
+    width: 2.5rem;
+    height: 2.5rem;
 
     background-image: url("http://antcod4.ru/upload/banneri/vverh.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 30px;
+    background-size: 2.5rem;
 }
 
 .hidden-menu {
     position: absolute;
-    top: 10px;
-    right: 40px;
+    top: 0.8rem;
+    right: 3.3rem;
     height: 1px;
     width: 1px;
     z-index: 10;
@@ -103,15 +108,15 @@ a {
 .btns {
     display: flex;
     flex-wrap: wrap;
-    margin-left: 14px;
-    margin-right: 14px;
+    margin-left: 1.17rem;
+    margin-right: 1.17rem;
 
     font-family: inherit;
 }
 
 .btn {
-    padding: 5px 0 5px 0;
-    background-color: white;
+    padding: 0.4rem 0 0.4rem 0;
+    background-color: #ffffff;
     border: rgb(233, 231, 231) 1px solid;
     cursor: pointer;
 }
@@ -128,35 +133,35 @@ a {
 .like::after {
     content: "";
     display: inline-block;
-    margin-left: 5px;
+    margin-left: 0.4rem;
 
-    width: 15px;
-    height: 15px;
+    width: 1.25rem;
+    height: 1.25rem;
 
     background-image: url("https://l2e-global.com/forum/uploads/reactions/pngfind.com-thumbs-down-emoji-png-6827427.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 15px;
+    background-size: 1.25rem;
 }
 
 .dislike::after {
     content: "";
     display: inline-block;
-    margin-left: 5px;
+    margin-left: 0.4rem;
 
-    width: 15px;
-    height: 15px;
+    width: 1.25rem;
+    height: 1.25rem;
 
     background-image: url("https://w7.pngwing.com/pngs/187/793/png-transparent-emojipedia-thumb-signal-noto-fonts-emoji-hand-orange-thumb-signal-thumbnail.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 15px;
+    background-size: 1.25rem;
 }
 
 .footer {
     background-color: #8414F4;
     text-align: center;
 
-    color: white;
+    color: #ffffff;
     font-size: smaller;
 }
