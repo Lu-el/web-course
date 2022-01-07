@@ -1,0 +1,162 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.main-box {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 758px;
+}
+
+.menu {
+    /* transform: scale(0); */
+    /* transform: translateX(-200px); */
+    width: 100%;
+    margin-bottom: 12px;
+
+    display: inline-block;
+    position: relative;
+
+    vertical-align: top;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
+}
+
+
+.header {
+    font-size: 24px;
+    padding: 10px 0 10px 10px;
+    border-bottom: grey 2px solid;
+}
+
+.news{
+    padding: 10px 10px 10px 10px;
+    height: fit-content;
+}
+
+.options,
+.log-links {
+    list-style-type: none;
+}
+
+.option {
+    padding-bottom: 10px;
+}
+
+.content {
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+
+    grid-template-rows: 1fr 1fr 1fr 1fr auto;
+}
+
+.artical-content {
+    margin: 0px 10px 12px 12px;
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.25);
+
+    max-height: 180px;
+}
+
+
+.artical-text {
+    height: 80px;
+    margin: 14px;
+    overflow: hidden;
+}
+
+.hidden-menu::before {
+    content: "";
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+
+    background-image: url("http://antcod4.ru/upload/banneri/vverh.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 30px;
+}
+
+.hidden-menu {
+    position: absolute;
+    top: 10px;
+    right: 40px;
+    height: 1px;
+    width: 1px;
+    z-index: 10;
+}
+
+.hidden-menu:checked::before {
+    background-image: url("https://img.icons8.com/win8/2x/000000/double-down.png");
+}
+
+.hidden-menu:checked ~ aside.menu {
+    display: none;
+}
+
+.btns {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 14px;
+    margin-right: 14px;
+
+    font-family: inherit;
+}
+
+.btn {
+    padding: 5px 0 5px 0;
+    background-color: white;
+    border: rgb(233, 231, 231) 1px solid;
+    cursor: pointer;
+}
+
+.like,
+.dislike {
+    width: 50%;
+}
+
+.see-more {
+    width: 100%;
+}
+
+.like::after {
+    content: "";
+    display: inline-block;
+    margin-left: 5px;
+
+    width: 15px;
+    height: 15px;
+
+    background-image: url("https://l2e-global.com/forum/uploads/reactions/pngfind.com-thumbs-down-emoji-png-6827427.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 15px;
+}
+
+.dislike::after {
+    content: "";
+    display: inline-block;
+    margin-left: 5px;
+
+    width: 15px;
+    height: 15px;
+
+    background-image: url("https://w7.pngwing.com/pngs/187/793/png-transparent-emojipedia-thumb-signal-noto-fonts-emoji-hand-orange-thumb-signal-thumbnail.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 15px;
+}
+
+.footer {
+    background-color: #8414F4;
+    text-align: center;
+
+    color: white;
+    font-size: smaller;
+}
