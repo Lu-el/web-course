@@ -50,7 +50,7 @@ html {
     width: 4.5rem;
     height: 4.5rem;
 
-    background-image: url("https://icasgames.org/wp-content/plugins/rating/img/search.png");
+    background-image: url("images/pointer-left.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 2.5rem;
@@ -61,7 +61,7 @@ html {
 }
 
 .hidden-menu:checked::before {
-    background-image: url("https://static-ru.insales.ru/files/1/2058/12298250/original/arrow_s.png");
+    background-image: url("images/pointer-right.png");
 }
 
 .hidden-menu:checked {
