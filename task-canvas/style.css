@@ -1,0 +1,215 @@
+*,
+::after, 
+::before {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* outline: red 1px solid; */
+
+    font-size: 16px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.begining {
+    width: 100%;
+    position: relative;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    background-color: rgb(0, 0, 0);
+   background-image: url(images/picture-header.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.header::after {
+    content: "";
+    background-color: #000000;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    opacity: 0.55;
+    z-index: 1;
+}
+
+.header-box {
+    margin: 3em auto;
+}
+
+.header-caption {
+    position: relative;
+    z-index: 10;
+
+    color: #ffffff;
+    font-size: 2em;
+}
+
+.small-caption {
+    font-size: 0.2em;
+}
+
+.canvas-control-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.canvas-control {
+    position: relative;
+    display: inline-block;
+    margin: 0.5rem;
+    width: 3.5rem;
+    height: 3.1rem;
+
+    background-color: #287cb4;
+    
+    cursor: pointer;
+  }
+
+.label-control {
+    position: relative;
+    display: inline-block;
+    margin: 0.5rem;
+    width: 3.5rem;
+    height: 3.1rem;
+    z-index: 0;
+
+    background-color: #287cb4;
+    
+    cursor: pointer;
+  }
+
+  .canvas-checkbox::before {
+    content: "";
+    position: absolute;
+    width: 3.5rem;
+    height: 3.1rem;
+    z-index: 10;
+
+    border-style: none;
+    background-repeat: no-repeat;
+    filter: invert(1);
+    background-position: center;
+}
+
+.canvas-checkbox:hover::before {
+    filter: invert(0.6);
+  }
+
+.canvas-checkbox:checked::before {
+    background-color: #19dfdc;
+    filter: invert(1);
+}
+
+.canvas-checkbox {
+    position: absolute;
+    /* clip: rect(1px, 1px, 1px, 1px); */
+    height: 1px;
+    width: 1px;
+
+    z-index: 10;
+}
+
+.canvas-control::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    border-style: none;
+    background-repeat: no-repeat;
+    filter: invert(1);
+    background-position: center;
+}
+
+.cursor-point::before { 
+    background-size: 1.3rem; 
+    background-image: url('images/mouse-pointer-solid.svg');
+  }
+
+.pencil::before {
+    background-size: 1.5rem;   
+    background-image: url('images/pencil-alt-solid.svg');
+}
+
+.rectangle::before {
+    background-size: 1.5rem;   
+    background-image: url('images/file-invoice-solid.svg');
+}
+
+.circle::before {
+    background-size: 2rem;   
+    background-image: url('images/circle-solid.svg');
+}
+
+.colors::before {
+    background-size: 2rem;   
+    background-image: url('images/palette-solid.svg');
+}
+
+.remove::after {
+    background-size: 2rem;   
+    background-image: url('images/trash-alt-solid.svg');
+}
+
+.canvas-control:first-child {
+    margin-top: 1rem;
+}
+
+.img-btn-control {
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    
+}
+
+.text-btn {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+  } 
+
+.canvas-element {
+    display: flex;
+}
+
+.canvas-element {
+    width: 100%;
+    max-width: 60em;
+} 
+
+.canvas-drawer-box {
+    margin: 1rem;
+    width: 100%;
+
+}
+
+.drawer {
+    display: block;
+    width: 620px;
+    height: 370px;
+
+    border:rgb(136, 95, 95) 1px solid;
+}
