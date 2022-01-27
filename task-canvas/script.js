@@ -89,7 +89,7 @@ class CanvasVectorEditor {
 
     initializeSubscriptions() {
         this.canvas.addEventListener('mousedown', this.mouseDown.bind(this));
-        this.canvas.addEventListener('mouseup', () => { this.destroy() }, false );
+        this.canvas.addEventListener('mouseup', () => { this.finishShape() }, false );
         this.colorPicker.addEventListener("input", this.newColor.bind(this), false);
         this.colorPicker.addEventListener("change", this.watchColorPicker.bind(this), false);
         this.remove.addEventListener("click", this.removeAll.bind(this), false);
@@ -108,7 +108,7 @@ class CanvasVectorEditor {
         this.color = event.target.value
     }
 
-    destroy() {
+    finishShape() {
         let shape;
         this.canvas.removeEventListener('mousemove', this.move);
         switch (this.getControlType()) {
@@ -127,9 +127,9 @@ class CanvasVectorEditor {
                 array.push(shape);
                 break;
         }
-        array.push(shape);
         array.forEach(function(item){
             item.render();
+            console.log(array);
         })
     }
 
@@ -155,7 +155,6 @@ class CanvasVectorEditor {
                 clear();
                 new Circle(x, y, vx, vy, color);
                 break;
-            default: this.destroy();
         }
 
         array.forEach(function(item){

@@ -7,13 +7,14 @@
     /* outline: red 1px solid; */
 
     font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .content {
     display: flex;
     flex-direction: column;
 
-    justify-content: center;
+    justify-content: start;
     align-items: center;
 }
 
@@ -212,4 +213,16 @@
     height: 370px;
 
     border:rgb(136, 95, 95) 1px solid;
+}
+
+.download-btn {
+    padding: 0.5rem 1rem;
+
+    border:rgba(136, 95, 95, 0.3) 1px solid;
+    background-color: #9bc9c8;
+    font-family: inherit;
+}
+
+.download-btn:hover {
+    font-weight: bold;
 }
