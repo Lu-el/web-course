@@ -20,11 +20,11 @@
         <section class="canvas-element">
             <div class="canvas-control-box">
                 <label class="label-control">
-                    <input class="canvas-checkbox cursor-point" type="radio" name="btn-canvas-control" data-control="new">
+                    <input class="canvas-checkbox cursor-point" type="radio" name="btn-canvas-control" data-control="new"checked>
                     <span class="text-btn">Select new object</span>
                 </label>
                 <label class="label-control">
-                    <input class="canvas-checkbox pencil" type="radio" name="btn-canvas-control" data-control="pencil" checked>
+                    <input class="canvas-checkbox pencil" type="radio" name="btn-canvas-control" data-control="pencil">
                     <span class="text-btn">Draw with pencil</span>
                 </label>
                 <label class="label-control">
@@ -39,7 +39,7 @@
                     <input class="canvas-checkbox colors" id="colors" type="color" value="#555555">
                     <span class="text-btn">Choose color</span>
                 </label>
-                <button type="button" class="canvas-control remove"><span class="text-btn">Remove</span>
+                <button type="button" class="canvas-control remove" id="remove"><span class="text-btn">Remove</span>
                 </button>
             </div>
             <div class="canvas-drawer-box">
@@ -50,6 +50,7 @@
         <footer class="footer">
             The end
         </footer>
+
     </div>
     <script src="script.js"></script>
 </body>

@@ -1,10 +1,11 @@
 
 class BrokenLine {
-    constructor(baseX, baseY, endX, endY) {
+    constructor(baseX, baseY, endX, endY, color) {
         this.baseX = baseX;
         this.baseY = baseY;
         this.endX = endX;
         this.endY = endY;
+        this.color = color;
         this.render();
     }
     render() {
@@ -13,16 +14,18 @@ class BrokenLine {
         ctx.beginPath();
         ctx.moveTo(this.baseX, this.baseY);
         ctx.lineTo(this.endX, this.endY);
+        ctx.strokeStyle = this.color;
         ctx.stroke();
     }
 }
 
 class Rectangle {
-    constructor(baseX, baseY, endX, endY) {
+    constructor(baseX, baseY, endX, endY, color) {
         this.baseX = baseX;
         this.baseY = baseY;
         this.endX = endX;
         this.endY = endY;
+        this.color = color;
         this.render();
     }
     render() {
@@ -32,77 +35,106 @@ class Rectangle {
         let height = this.endY - this.baseY;
         ctx.beginPath();
         ctx.moveTo(this.baseX, this.baseY);
+        ctx.strokeStyle = this.color;
         ctx.strokeRect(this.baseX, this.baseY, width, height);
         ctx.stroke();
     }
 }
 class Circle {
-    constructor(baseX, baseY, endX, endY) {
+    constructor(baseX, baseY, endX, endY, color) {
         this.baseX = baseX;
         this.baseY = baseY;
         this.endX = endX;
         this.endY = endY;
+        this.color = color;
         this.render();
     }
     render() {
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
         let radius = Math.sqrt((this.endX - this.baseX) ** 2 + (this.endY - this.baseY) ** 2);
+        ctx.strokeStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.baseX, this.baseY, radius, 0, Math.PI * 2, false);
         ctx.stroke();
     }
 }
+
+const array = [];
+
 class CanvasVectorEditor {
     constructor() {
         this.canvas = document.getElementById('canvas');
-        this.color = document.getElementById('colors');
-        this.coord = [];
+        this.colorPicker = document.getElementById('colors');
+        this.color = '#019192';
+        this.coords = {
+            x: 0,
+            y: 0,
+            vx: 0,
+            vy: 0,
+        };
+        this.move = this.mouseMove.bind(this);
         this.mouseDown = function(event) {
-            this.coord = [];
-            let positionBox = this.canvas.getBoundingClientRect();
+            const positionBox = this.canvas.getBoundingClientRect();
             let canvasX = Math.round(event.clientX - positionBox.left);
-            this.coord.push(canvasX);
+            this.coords.x = canvasX;
             let canvasY = Math.round(event.clientY - positionBox.top);
-            this.coord.push(canvasY);
+            this.coords.y = canvasY;
+            this.canvas.addEventListener('mousemove', this.move);
         }
-        // this.handleEvent = function(event) {
-        //     switch(event.type) {
-        //         case 'mousemove':
-        //             this.mouseMove();
-        //             break;
-        //         case 'mousedown':
-        //             this.coord = [];
-        //             let positionBox = this.canvas.getBoundingClientRect();
-        //             let canvasX = Math.round(event.clientX - positionBox.left);
-        //             this.coord.push(canvasX);
-        //             let canvasY = Math.round(event.clientY - positionBox.top);
-        //             this.coord.push(canvasY);
-        //             break;
-        //         case 'mouseup':
-        //             this.destroy();
-        //     }
-        
-
+        this.remove = document.getElementById('remove');
         this.initializeSubscriptions();
     }
+    
 
     initializeSubscriptions() {
-        // this.canvas.addEventListener('mousemove', this, false);
-        // this.mouseDown();
-        this.canvas.addEventListener('mousemove', () => { this.mouseMove(); }, false);
-        this.canvas.addEventListener('mousedown', this.mouseDown.bind(this), false);
-        // this.canvas.addEventListener('mousedown', this, false);
-        this.canvas.addEventListener('mouseup', () => { this.destroy() }, false )
+        this.canvas.addEventListener('mousedown', this.mouseDown.bind(this));
+        this.canvas.addEventListener('mouseup', () => { this.destroy() }, false );
+        this.colorPicker.addEventListener("input", this.newColor.bind(this), false);
+        this.colorPicker.addEventListener("change", this.watchColorPicker.bind(this), false);
+        this.remove.addEventListener("click", this.removeAll.bind(this), false);
+    }
+
+    removeAll() {
+        array.splice(0, array.length);
+        this.clear();
+    }
+
+    newColor(event) {
+        this.color = event.target.value;
+    }
+
+    watchColorPicker(event) {
+        this.color = event.target.value
     }
 
     destroy() {
-        this.canvas.removeEventListener('mousemove', () => { this.mouseMove(); }, false);
-        this.canvas.removeEventListener('mousedown', this.mouseDown.bind(this), false);
-        this.canvas.removeEventListener('mousedown', () => { this.console(); }, false);
+        let shape;
+        this.canvas.removeEventListener('mousemove', this.move);
+        switch (this.getControlType()) {
+            case "new":
+                return;
+            case "pencil":
+                return;
+            case "rectangle":
+                this.clear();
+                shape = new Rectangle(this.coords.x, this.coords.y, this.coords.vx, this.coords.vy, this.color);
+                array.push(shape);
+                break;
+            case "circle":
+                this.clear();
+                shape = new Circle(this.coords.x, this.coords.y, this.coords.vx, this.coords.vy, this.color);
+                array.push(shape);
+                break;
+        }
+        array.push(shape);
+        array.forEach(function(item){
+            item.render();
+        })
     }
 
-    drawShape(x, y, vx, vy, controlType) {
+    drawShape(x, y, vx, vy, controlType, color) {
+        let shape;
         let clear = function() {
             let canvas = document.getElementById('canvas');
             let ctx = canvas.getContext('2d');
@@ -110,27 +142,31 @@ class CanvasVectorEditor {
         }; 
         switch (controlType) {
             case "new":
-                // this.destroy();
                 break;
             case "pencil":
-                clear();
-                new BrokenLine(x, y, vx, vy);
+                shape = new BrokenLine(x, y, vx, vy, color);
+                array.push(shape);
                 break;
             case "rectangle":
                 clear();
-                new Rectangle(x, y, vx, vy);
+                new Rectangle(x, y, vx, vy, color);
                 break;
             case "circle":
                 clear();
-                new Circle(x, y, vx, vy);
+                new Circle(x, y, vx, vy, color);
                 break;
             default: this.destroy();
         }
+
+        array.forEach(function(item){
+            item.render();
+        })
     }
 
     clear() {
-        let ctx = this.canvas.getContext('2d');
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            let canvas = document.getElementById('canvas');
+            let ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     getControlType() {
@@ -142,73 +178,21 @@ class CanvasVectorEditor {
         }
     }
 
-    // test(a, b) {
-    //     return a + b;
-    // }
-
-    // mouseDown() {
-    //     let canvas = document.getElementById('canvas');
-    //     let coord =[];
-    //     let activ = () => canvas.addEventListener('mousedown', function(event) {
-    //         coord = [];
-    //         let positionBox = canvas.getBoundingClientRect();
-    //         let canvasX = Math.round(event.clientX - positionBox.left);
-    //         coord.push(canvasX);
-    //         let canvasY = Math.round(event.clientY - positionBox.top);
-    //         coord.push(canvasY);
-    //     })
-    //     activ();
-    //     return console.log(coord);
-    // }
-
-    
-
-    // mouseDown = () => canvas.addEventListener('mousedown', function(event) {
-    //     console.log(this.coord);
-    //     let positionBox = canvas.getBoundingClientRect();
-    //     let canvasX = Math.round(event.clientX - positionBox.left);
-    //     this.coord.push(canvasX);
-    //     let canvasY = Math.round(event.clientY - positionBox.top);
-    //     this.coord.push(canvasY);
-    //     console.log(coord);
-    //     return coord;
-    // })
-
-
-    
-    // mouseDown()  {
-    //     this.canvas.addEventListener('mousemove', function(event) {
-    //         this.coord = [];
-    //         let positionBox = canvas.getBoundingClientRect();
-    //         let canvasX = Math.round(event.clientX - positionBox.left);
-    //         this.coord.push(canvasX);
-    //         let canvasY = Math.round(event.clientY - positionBox.top);
-    //         this.coord.push(canvasY);
-    //         })
-    // }
-
-    mouseMove() {
+    mouseMove(event) {
         let type = this.getControlType;
-        let baseCoord = this.coord;
-        let draw = this.drawShape;
-        this.canvas.addEventListener('mousemove', function(event) {
-            let coords = [];
-            let positionBox = this.getBoundingClientRect();
+        let color = this.color;
+
+            let positionBox = event.target.getBoundingClientRect();
             let canvasX = Math.round(event.clientX - positionBox.left);
-            coords.push(canvasX);
+            this.coords.vx = canvasX;
             let canvasY = Math.round(event.clientY - positionBox.top);
-            coords.push(canvasY);
-
-            console.log(baseCoord + " " + coords + " " + type());
-
-            draw(baseCoord[0], baseCoord[1], coords[0], coords[1], type());
-        })
-    }
-
-    clear() {
-        let canvas = document.getElementById('canvas');
-        let ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.coords.vy = canvasY;
+            
+            this.drawShape(this.coords.x, this.coords.y, this.coords.vx, this.coords.vy, type(), color);
+            if (type() === 'pencil') {
+                this.coords.x = this.coords.vx;
+                this.coords.y = this.coords.vy;
+            }
     }
 }
 
