@@ -17,42 +17,47 @@
             </header>
         </div>
 
-        <section class="canvas-element">
-            <div class="canvas-control-box">
-                <label class="label-control">
-                    <input class="canvas-checkbox cursor-point" type="radio" name="btn-canvas-control" data-control="new"checked>
-                    <span class="text-btn">Select new object</span>
-                </label>
-                <label class="label-control">
-                    <input class="canvas-checkbox pencil" type="radio" name="btn-canvas-control" data-control="pencil">
-                    <span class="text-btn">Draw with pencil</span>
-                </label>
-                <label class="label-control">
-                    <input class="canvas-checkbox rectangle" type="radio" name="btn-canvas-control" data-control="rectangle">
-                    <span class="text-btn">Draw rectangle</span>
-                </label>
-                <label class="label-control">
-                    <input class="canvas-checkbox circle" type="radio" name="btn-canvas-control" data-control="circle">
-                    <span class="text-btn">Draw circle</span>
-                </label>
-                <label class="label-control">
-                    <input class="canvas-checkbox colors" id="colors" type="color" value="#555555">
-                    <span class="text-btn">Choose color</span>
-                </label>
-                <button type="button" class="canvas-control remove" id="remove"><span class="text-btn">Remove</span>
-                </button>
-            </div>
-            <div class="canvas-drawer-box">
-                <canvas class="drawer" id="canvas" width="620" height="370"><img src="images/picture-alt-canvas.jpg" alt=""></canvas>
-            </div>
-        </section>
+        <div class="canvas-drawer">
+            <section class="canvas-element">
+                <div class="canvas-control-box">
+                    <label class="label-control">
+                        <input class="canvas-checkbox cursor-point" type="radio" name="btn-canvas-control" data-control="new"checked>
+                        <span class="text-btn">Select new object</span>
+                    </label>
+                    <label class="label-control">
+                        <input class="canvas-checkbox pencil" type="radio" name="btn-canvas-control" data-control="pencil">
+                        <span class="text-btn">Draw with pencil</span>
+                    </label>
+                    <label class="label-control">
+                        <input class="canvas-checkbox rectangle" type="radio" name="btn-canvas-control" data-control="rectangle">
+                        <span class="text-btn">Draw rectangle</span>
+                    </label>
+                    <label class="label-control">
+                        <input class="canvas-checkbox circle" type="radio" name="btn-canvas-control" data-control="circle">
+                        <span class="text-btn">Draw circle</span>
+                    </label>
+                    <label class="label-control">
+                        <input class="canvas-checkbox colors" id="colors" type="color" value="#555555">
+                        <span class="text-btn">Choose color</span>
+                    </label>
+                    <button type="button" class="canvas-control remove" id="remove"><span class="text-btn">Remove</span>
+                    </button>
+                </div>
+                <div class="canvas-drawer-box">
+                    <canvas class="drawer" id="canvas" width="856" height="370"><img src="images/picture-alt-canvas.jpg" alt=""></canvas>
+                </div>
+            </section>
 
-        <section class="btns-download">
-            <button class="importJSON download-btn">Impot JSON</button>
-            <button class="exportJSON download-btn">Export JSON</button>
-            <button class="dwlSPG download-btn">Download as PNG</button>
-            <button class="dwlSVG download-btn">Download as SVG</button>
-        </section>
+            <section class="btns-download">
+                <button class="importJSON download-btn">Impot JSON</button>
+                <button class="exportJSON download-btn">Export JSON</button>
+                <button class="dwlSPG download-btn">Download as PNG</button>
+                <button class="dwlSVG download-btn">Download as SVG</button>
+            </section>
+            <section class="textarea-box">
+                <textarea class="textarea-field"></textarea>
+            </section>
+        </div>
         <footer class="footer">
             The end
         </footer>

@@ -16,6 +16,8 @@
 
     justify-content: start;
     align-items: center;
+
+    background-color: #EAEAEA;
 }
 
 .begining {
@@ -65,6 +67,14 @@
     font-size: 0.2em;
 }
 
+.canvas-drawer {
+    margin: 1rem auto;
+
+    border-radius: 5px;
+    box-shadow: 1px 4px 12px 4px rgba(34, 60, 80, 0.24);
+    background-color: #ffffff;
+}
+
 .canvas-control-box {
     display: flex;
     flex-direction: column;
@@ -77,7 +87,7 @@
     width: 3.5rem;
     height: 3.1rem;
 
-    background-color: #287cb4;
+    background-color: #08D9D6;
     
     cursor: pointer;
   }
@@ -90,7 +100,7 @@
     height: 3.1rem;
     z-index: 0;
 
-    background-color: #287cb4;
+    background-color: #08D9D6;
     
     cursor: pointer;
   }
@@ -106,14 +116,15 @@
     background-repeat: no-repeat;
     filter: invert(1);
     background-position: center;
+    cursor: pointer;
 }
 
 .canvas-checkbox:hover::before {
-    filter: invert(0.6);
+    filter: invert(0.8);
   }
 
 .canvas-checkbox:checked::before {
-    background-color: #19dfdc;
+    background-color: #00ce98;
     filter: invert(1);
 }
 
@@ -209,20 +220,42 @@
 
 .drawer {
     display: block;
-    width: 620px;
+    width: 856px;
     height: 370px;
 
     border:rgb(136, 95, 95) 1px solid;
 }
 
+.btns-download {
+    width: 100%;
+    display: flex;
+    /* justify-content: space-around; */
+    margin-left: 5.5rem;
+}
+
 .download-btn {
     padding: 0.5rem 1rem;
+    margin-right: 1rem;
 
     border:rgba(136, 95, 95, 0.3) 1px solid;
-    background-color: #9bc9c8;
+    background-color: #EAEAEA;
     font-family: inherit;
+
+    cursor: pointer;
 }
 
 .download-btn:hover {
     font-weight: bold;
+}
+
+.textarea-box {
+    /* width: 50rem; */
+    margin-top: 1rem;
+    margin-left: 5.5rem;
+}
+
+.textarea-field {
+    width: 53.5rem;
+    height: 7rem;
+    padding: 0.5rem 1rem;
 }
