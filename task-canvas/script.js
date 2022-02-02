@@ -7,13 +7,23 @@ class BrokenLine {
         this.render();
     }
 
-    render() {
-        if (!this.arr[0].length) {
-            this.drawShape(this.arr[0], this.arr[1], this.arr[2], this.arr[3]);
-            return;
+    svgPath() {
+        console.log(this.arr);
+        let path = [];
+        path.push(`M ${this.arr[0]} ${this.arr[1]}`)
+        for (let i = 2; i < (this.arr.length-1); i += 2) {
+            path.push(`L ${this.arr[i]} ${this.arr[i+1]}`)
         }
-        for (let i = 0; i < (this.arr[0].length - 3); i += 2) {
-            this.drawShape(this.arr[0][i], this.arr[0][i+1], this.arr[0][i + 2], this.arr[0][i + 3]);
+        return path.join(' ');
+    }
+
+    render() {
+        if (this.arr.length == 1) {
+            this.arr = this.arr.flat();
+            this.render();
+        }
+        for (let i = 0; i < (this.arr.length - 3); i += 2) {
+            this.drawShape(this.arr[i], this.arr[i+1], this.arr[i + 2], this.arr[i + 3]);
         }
     }
 
@@ -29,9 +39,9 @@ class BrokenLine {
 
     isPointWithin(x, y) {
         let perpen;
-        for (let i = 0; i < (this.arr[0].length - 3); i += 2) {
+        for (let i = 0; i < (this.arr.length - 3); i += 2) {
             let coordsLine = [];
-            coordsLine.push(this.arr[0][i], this.arr[0][i+1], this.arr[0][i + 2], this.arr[0][i + 3]);
+            coordsLine.push(this.arr[i], this.arr[i+1], this.arr[i + 2], this.arr[i + 3]);
             let a = Math.sqrt((coordsLine[2] - coordsLine[0])**2 + (coordsLine[3] - coordsLine[1])**2);
             let b = Math.sqrt((coordsLine[2] - x)**2 + (coordsLine[3] - y)**2);
             let c = Math.sqrt((coordsLine[0] - x)**2 + (coordsLine[1] - y)**2);
@@ -50,11 +60,11 @@ class BrokenLine {
     }
 
     setCoord(x, y) {
-        for (let i = 0; i < (this.arr[0].length); i += 2) {
-            this.arr[0][i] += x;
+        for (let i = 0; i < (this.arr.length); i += 2) {
+            this.arr[i] += x;
         }
-        for (let j = 1; j < (this.arr[0].length); j += 2) {
-            this.arr[0][j] += y;
+        for (let j = 1; j < (this.arr.length); j += 2) {
+            this.arr[j] += y;
         }
     }
 
@@ -70,6 +80,19 @@ class Rectangle {
         this.arr.push(...arrC);
         this.color = color;
         this.render();
+    }
+
+    svgPath() {
+        let path = [];
+        path.push(`M ${this.arr[0]} ${this.arr[1]}`)
+        for (let i = 0; i < (this.arr.length-1); i += 2) {
+            path.push(`L ${this.arr[i]} ${this.arr[1]}`)
+        }
+        for (let i = 2; i >= 0; i -= 2) {
+            path.push(`L ${this.arr[i]} ${this.arr[3]}`)
+        }
+        path.push('z');
+        return console.log(path.join(' '));
     }
 
     render() {
@@ -138,6 +161,15 @@ class Circle {
         this.render();
     }
 
+    svgPath() {
+        let path = [];
+        let radius = Math.sqrt((this.arr[2] - this.arr[0]) ** 2 + (this.arr[3] - this.arr[1]) ** 2);
+        let x = this.arr[0] + radius;
+        let y = this.arr[1] + radius;
+        path.push(`M ${x} ${y} A ${radius} ${radius} 0 1 0 ${(x-0.1)} ${(y-0.1)}`);
+        console.log(path.join(' '));
+    }
+
     render() {
         if (this.arr.length == 1) {
             this.arr = this.arr.flat();
@@ -202,10 +234,14 @@ class CanvasVectorEditor {
             this.coords.vx = this.coords.x;
             this.coords.vy = this.coords.y;
             this.amountCoords.push(this.coords.x, this.coords.y);
-            this.setMovingShape(this.arrayOfShapes);
+            const shape = this.arrayOfShapes.find(item => item.isPointWithin(this.coords.x, this.coords.y) == true)
+            this.setMovingShape(shape);
             this.canvas.addEventListener('mousemove', this.move);
         }
         this.remove = document.getElementById('remove');
+        this.saving = document.getElementById('savingAsPng');
+        this.impJson = document.getElementById('importJSON');
+        this.expJson = document.getElementById('exportJSON');
         this.initializeSubscriptions();
     }
 
@@ -216,7 +252,28 @@ class CanvasVectorEditor {
         this.colorPicker.addEventListener("change", this.watchColorPicker.bind(this), false);
         this.remove.addEventListener("click", this.removeAll.bind(this), false);
         window.addEventListener('beforeunload', this.closeWindowAndTab.bind(this));
-        window.addEventListener('load', this.loadWindow.bind(this))
+        window.addEventListener('load', this.loadWindow.bind(this));
+        this.saving.addEventListener('click', this.saveImagePng.bind(this));
+        this.impJson.addEventListener('click', this.importjson.bind(this));
+        this.expJson.addEventListener('click', this.exporjson.bind(this));
+    }
+
+    saveImageSvg() {
+        this.arrayOfShapes.forEach(function(item){
+            let path = item.svgPath();
+            document
+        })
+    }
+
+    saveImagePng() {
+        let imageData = this.canvas.toDataURL("image/svg");
+        let image = new Image();
+        image.src = imageData;
+        let link = document.createElement("a");
+
+        link.setAttribute("href", image.src);
+        link.setAttribute("download", "canvasImage");
+        link.click();
     }
 
     loadWindow() {
@@ -226,7 +283,7 @@ class CanvasVectorEditor {
         returnObj.forEach(function(item){
         switch (item.figure) {
             case "BrokenLine":
-                shape = new BrokenLine(item.color, item.arr[0]);
+                shape = new BrokenLine(item.color, item.arr);
                 shapes.push(shape);
                 break;
             case "Rectangle":
@@ -250,11 +307,46 @@ class CanvasVectorEditor {
         localStorage.setItem('canvasPicture', savingFile);
     }
 
-    setMovingShape(array) {
-        if (array.find(item => item.isPointWithin(this.coords.x, this.coords.y) == true)) {
-            return this.movingshape = array.find(item => item.isPointWithin(this.coords.x, this.coords.y) == true);
+    importjson() {
+        let file = this.arrayOfShapes;
+        let savingFile = JSON.stringify(file);
+        console.log(savingFile);
+        let textarea = document.querySelector('.textarea-field');
+        textarea.value = savingFile;
+    }
+
+    exporjson() {
+        let textarea = document.querySelector('.textarea-field');
+        console.log(textarea.value); 
+        let shape;
+        let shapes = this.arrayOfShapes;
+        let returnObj = JSON.parse(textarea.value);
+        returnObj.forEach(function(item){
+        switch (item.figure) {
+            case "BrokenLine":
+                shape = new BrokenLine(item.color, item.arr[0]);
+                shapes.push(shape);
+                break;
+            case "Rectangle":
+                shape = new Rectangle(item.color, item.arr);
+                shapes.push(shape);
+                break;
+            case "Circle":
+                shape = new Circle(item.color, item.arr);
+                shapes.push(shape);
+                break;
+            }
+        })
+        console.log(shapes);
+        shapes.forEach(function(item){
+            item.render();
+        })
+    }
+
+    setMovingShape(shape) { 
+        if (shape) {
+            this.movingshape = shape;
         }
-        return;
     }
 
     removeAll() {
@@ -268,6 +360,7 @@ class CanvasVectorEditor {
 
     watchColorPicker(event) {
         this.color = event.target.value;
+        console.log(this.movingshape);
         this.movingshape.setColor(this.color);
     }
 
