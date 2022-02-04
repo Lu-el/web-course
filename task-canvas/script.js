@@ -1,13 +1,12 @@
 class BrokenLine {
-    constructor(color, ...coord){
+    constructor(ctx, color, ...coords){
         this.figure = 'BrokenLine';
         this.color = color;
-        this.coords = [];
-        this.coords.push(...coord);
-        this.render();
+        this.coords = coords;
+        this.render(ctx);
     }
 
-    svgPath() {
+    toSvgFragment() {
         let path = [];
         path.push(`<path d="M ${this.coords[0]} ${this.coords[1]}`)
         for (let i = 2; i < (this.coords.length-1); i += 2) {
@@ -17,18 +16,16 @@ class BrokenLine {
         return path.join(' ');
     }
 
-    render() {
+    render(ctx) {
         if (this.coords.length == 1) {
             this.coords = this.coords.flat();
         }
         for (let i = 0; i < (this.coords.length - 3); i += 2) {
-            this.drawShape(this.coords[i], this.coords[i+1], this.coords[i + 2], this.coords[i + 3]);
+            this.drawShape(ctx, this.coords[i], this.coords[i+1], this.coords[i + 2], this.coords[i + 3]);
         }
     }
 
-    drawShape(x, y, x1, y1) {
-        let canvas = document.getElementById('canvas');
-        let ctx = canvas.getContext('2d');
+    drawShape(ctx, x, y, x1, y1) {
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(x1, y1);
@@ -58,12 +55,12 @@ class BrokenLine {
        return false;
     }
 
-    setCoord(x, y) {
+    moveShape(dx, dy) {
         for (let i = 0; i < (this.coords.length); i += 2) {
-            this.coords[i] += x;
+            this.coords[i] += dx;
         }
         for (let j = 1; j < (this.coords.length); j += 2) {
-            this.coords[j] += y;
+            this.coords[j] += dy;
         }
     }
 
@@ -73,15 +70,14 @@ class BrokenLine {
 }
 
 class Rectangle {
-    constructor(color, ...coord) {
+    constructor(ctx, color, ...coords) {
         this.figure = 'Rectangle';
-        this.coords = [];
-        this.coords.push(...coord);
+        this.coords = coords;
         this.color = color;
-        this.render();
+        this.render(ctx);
     }
 
-    svgPath() {
+    toSvgFragment() {
         let path = [];
         path.push(`<path d="M ${this.coords[0]} ${this.coords[1]}`)
         for (let i = 0; i < (this.coords.length-1); i += 2) {
@@ -94,16 +90,14 @@ class Rectangle {
         return path.join(' ');
     }
 
-    render() {
+    render(ctx) {
         if (this.coords.length == 1) {
             this.coords = this.coords.flat();
         }
-        this.drawShape(this.coords[0], this.coords[1], this.coords[2], this.coords[3]);
+        this.drawShape(ctx, this.coords[0], this.coords[1], this.coords[2], this.coords[3]);
     }
 
-    drawShape(x, y, vx, vy) {
-        let canvas = document.getElementById('canvas');
-        let ctx = canvas.getContext('2d');
+    drawShape(ctx, x, y, vx, vy) {
         let width = vx - x;
         let height = vy - y;
         ctx.beginPath();
@@ -137,12 +131,12 @@ class Rectangle {
        return false;
     }
 
-    setCoord(x, y) {
+    moveShape(dx, dy) {
         for (let i = 0; i < (this.coords.length); i += 2) {
-            this.coords[i] += x;
+            this.coords[i] += dx;
         }
         for (let j = 1; j < (this.coords.length); j += 2) {
-            this.coords[j] += y;
+            this.coords[j] += dy;
         }
     }
 
@@ -152,15 +146,14 @@ class Rectangle {
 }
 
 class Circle {
-    constructor(color, ...coord) {
+    constructor(ctx, color, ...coords) {
         this.figure = 'Circle';
-        this.coords = [];
-        this.coords.push(...coord);
+        this.coords = coords;
         this.color = color;
-        this.render();
+        this.render(ctx);
     }
 
-    svgPath() {
+    toSvgFragment() {
         let path = [];
         let radius = Math.sqrt((this.coords[2] - this.coords[0]) ** 2 + (this.coords[3] - this.coords[1]) ** 2);
         let x = this.coords[0];
@@ -170,16 +163,14 @@ class Circle {
         return path.join(' ');
     }
 
-    render() {
+    render(ctx) {
         if (this.coords.length == 1) {
             this.coords = this.coords.flat();
         }
-        this.drawShape(this.coords[0], this.coords[1], this.coords[2], this.coords[3]);
+        this.drawShape(ctx, this.coords[0], this.coords[1], this.coords[2], this.coords[3]);
     }
 
-    drawShape(x, y, vx, vy) {
-        let canvas = document.getElementById('canvas');
-        let ctx = canvas.getContext('2d');
+    drawShape(ctx, x, y, vx, vy) {
         let radius = Math.sqrt((vx - x) ** 2 + (vy - y) ** 2);
         ctx.strokeStyle = this.color;
         ctx.beginPath();
@@ -195,12 +186,12 @@ class Circle {
         return false;
     }
 
-    setCoord(x, y) {
+    moveShape(dx, dy) {
         for (let i = 0; i < (this.coords.length); i += 2) {
-            this.coords[i] += x;
+            this.coords[i] += dx;
         }
         for (let j = 1; j < (this.coords.length); j += 2) {
-            this.coords[j] += y;
+            this.coords[j] += dy;
         }
     }
 
@@ -209,9 +200,10 @@ class Circle {
     }
 }
 
-class CanvasVectorEditor {
+class CanvasVectorEditor {  
     constructor() {
         this.canvas = document.getElementById('canvas');
+        this.ctx = this.canvas.getContext('2d');
         this.colorPicker = document.getElementById('colors');
         this.color = '#08D9D6';
         this.coords = {
@@ -234,16 +226,16 @@ class CanvasVectorEditor {
 
     initializeSubscriptions() {
         this.canvas.addEventListener('mousedown', this.mouseDown.bind(this));
-        this.canvas.addEventListener('mouseup', () => { this.finishShape() }, false );
-        this.colorPicker.addEventListener("input", this.newColor.bind(this), false);
-        this.colorPicker.addEventListener("change", this.watchColorPicker.bind(this), false);
-        this.remove.addEventListener("click", this.removeAll.bind(this), false);
-        window.addEventListener('beforeunload', this.closeWindowAndTab.bind(this));
-        window.addEventListener('load', this.loadWindow.bind(this));
-        this.savingPng.addEventListener('click', this.saveImagePng.bind(this));
-        this.impJson.addEventListener('click', this.importjson.bind(this));
-        this.expJson.addEventListener('click', this.exporjson.bind(this));
-        this.savingSVG.addEventListener('click', this.saveImageSvg.bind(this));
+        this.canvas.addEventListener('mouseup', this.finishShape);
+        this.colorPicker.addEventListener("input", this.newColor.bind(this) );
+        this.colorPicker.addEventListener("change", this.watchColorPicker.bind(this) );
+        this.remove.addEventListener("click", this.removeAll);
+        window.addEventListener('beforeunload', this.closeWindowAndTab);
+        window.addEventListener('load', this.loadWindow);
+        this.savingPng.addEventListener('click', this.saveImagePng);
+        this.impJson.addEventListener('click', this.importJson);
+        this.expJson.addEventListener('click', this.exporJson);
+        this.savingSVG.addEventListener('click', this.saveImageSvg);
     }
 
     mouseDown(event) {
@@ -261,20 +253,17 @@ class CanvasVectorEditor {
         this.canvas.addEventListener('mousemove', this.move);
     }
 
-    saveImageSvg() {
+    saveImageSvg = () => {
         const canvasWidth = this.canvas.width;
         const canvasHeight = this.canvas.height;
         const path = [];
-        this.arrayOfShapes.forEach(function(item){
-            path.push(item.svgPath());
-        });
+        this.arrayOfShapes.forEach(item => path.push(item.toSvgFragment()));
         let svgData = `<svg width="${canvasWidth}" height="${canvasHeight}" xmlns="http://www.w3.org/2000/svg"> 
         ${path.join(' ')}
         </svg>`;
-        console.log(svgData);
+
         let svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
         let svgUrl = URL.createObjectURL(svgBlob);
-        console.log(svgUrl);
         let image = new Image();
         image.src = svgUrl;
 
@@ -285,7 +274,7 @@ class CanvasVectorEditor {
         link.click();
     }
 
-    saveImagePng() {
+    saveImagePng = () => {
         let imageData = this.canvas.toDataURL("image/svg");
         let image = new Image();
         image.src = imageData;
@@ -296,82 +285,82 @@ class CanvasVectorEditor {
         link.click();
     }
 
-    loadWindow() {
+    loadWindow = () => {
+        const ctx = this.ctx;
         let shape;
         let shapes = this.arrayOfShapes;
         let returnObj = JSON.parse(localStorage.getItem('canvasPicture'));
         returnObj.forEach(function(item){
         switch (item.figure) {
             case "BrokenLine":
-                shape = new BrokenLine(item.color, item.coords);
+                shape = new BrokenLine(ctx, item.color, item.coords);
                 shapes.push(shape);
                 break;
             case "Rectangle":
-                shape = new Rectangle(item.color, item.coords);
+                shape = new Rectangle(ctx, item.color, item.coords);
                 shapes.push(shape);
                 break;
             case "Circle":
-                shape = new Circle(item.color, item.coords);
+                shape = new Circle(ctx, item.color, item.coords);
                 shapes.push(shape);
                 break;
             }
         })
-        shapes.forEach(function(item){
-            item.render();
-        })
+        shapes.forEach(item => item.render(this.ctx));
     }
 
-    closeWindowAndTab() {
+    closeWindowAndTab = () => {
         let file = this.arrayOfShapes;
         let savingFile = JSON.stringify(file);
         localStorage.setItem('canvasPicture', savingFile);
     }
 
-    importjson() {
+    exporJson = () => {
         let file = this.arrayOfShapes;
         let savingFile = JSON.stringify(file);
-        console.log(savingFile);
         let textarea = document.querySelector('.textarea-field');
         textarea.value = savingFile;
     }
 
-    exporjson() {
+    importJson = () => {
+        const ctx = this.ctx;
         let textarea = document.querySelector('.textarea-field');
-        console.log(textarea.value); 
         let shape;
         let shapes = this.arrayOfShapes;
         let returnObj = JSON.parse(textarea.value);
         returnObj.forEach(function(item){
         switch (item.figure) {
             case "BrokenLine":
-                shape = new BrokenLine(item.color, item.coords);
+                shape = new BrokenLine(ctx, item.color, item.coords);
                 shapes.push(shape);
                 break;
             case "Rectangle":
-                shape = new Rectangle(item.color, item.coords);
+                shape = new Rectangle(ctx, item.color, item.coords);
                 shapes.push(shape);
                 break;
             case "Circle":
-                shape = new Circle(item.color, item.coords);
+                shape = new Circle(ctx, item.color, item.coords);
                 shapes.push(shape);
                 break;
             }
         });
-        shapes.forEach(function(item){
-            item.render();
-        })
+        shapes.forEach(item => item.render(ctx));
     }
 
     setMovingShape(shape) { 
         if (shape) {
-            return this.movingShape = shape;
+            this.movingShape = shape;
+        } else {
+            this.movingShape = null;
         }
-        this.movingShape = "";
     }
 
-    removeAll() {
-        this.arrayOfShapes.splice(0, this.arrayOfShapes.length);
-        this.clear();
+    removeAll = () => {
+        const answer = confirm("Your creating will be removed, are you sure?"); 
+        if (answer) {
+            this.arrayOfShapes.splice(0, this.arrayOfShapes.length);
+            this.clear();
+        }
     }
 
     newColor(event) {
@@ -387,7 +376,7 @@ class CanvasVectorEditor {
         }
     }
 
-    finishShape() {
+    finishShape = () => {
         let shape;
         this.canvas.removeEventListener('mousemove', this.move);
         switch (this.getControlType()) {
@@ -395,26 +384,25 @@ class CanvasVectorEditor {
                 break;
             case "pencil":
                 this.clear();
-                shape = new BrokenLine(this.color, this.amountCoords);
+                shape = new BrokenLine(this.ctx, this.color, this.amountCoords);
                 this.arrayOfShapes.push(shape);
                 break;
             case "rectangle":
                 this.clear();
-                shape = new Rectangle(this.color, this.coords.x, this.coords.y, this.coords.vx, this.coords.vy);
+                shape = new Rectangle(this.ctx, this.color, this.coords.x, this.coords.y, this.coords.vx, this.coords.vy);
                 this.arrayOfShapes.push(shape);
                 break;
             case "circle":
                 this.clear();
-                shape = new Circle(this.color, this.coords.x, this.coords.y, this.coords.vx, this.coords.vy);
+                shape = new Circle(this.ctx, this.color, this.coords.x, this.coords.y, this.coords.vx, this.coords.vy);
                 this.arrayOfShapes.push(shape);
                 break;
         }
-        this.arrayOfShapes.forEach(function(item){
-            item.render();
-        })
+        this.arrayOfShapes.forEach(item => item.render(this.ctx));
     }
 
     drawShape(x, y, vx, vy, controlType, color) {
+        const ctx = this.ctx;
         let shape;
         switch (controlType) {
             case "new":
@@ -423,36 +411,29 @@ class CanvasVectorEditor {
                 shape = this.movingShape;
 
                 if (shape) {
-                    shape.setCoord(deltaX, deltaY);
+                    shape.moveShape(deltaX, deltaY);
                     this.coords.x = this.coords.vx;
                     this.coords.y = this.coords.vy;
                     this.clear();
                 }
                 break;
             case "pencil":
-                shape = new BrokenLine(color, x, y, vx, vy);
+                shape = new BrokenLine(ctx, color, x, y, vx, vy);
                 break;
             case "rectangle":
                 this.clear();
-                new Rectangle(color, x, y, vx, vy);
+                new Rectangle(ctx, color, x, y, vx, vy);
                 break;
             case "circle":
                 this.clear();
-                new Circle(color, x, y, vx, vy);
+                new Circle(ctx, color, x, y, vx, vy);
                 break;
         }
-        this.arrayOfShapes.forEach(function(item){
-            item.render();
-        })
-    }
-
-    moveShape(shape) {
-        shape.setCoord(x, y)
+        this.arrayOfShapes.forEach(item => item.render(ctx));
     }
 
     clear() {
-        let ctx = this.canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     getControlType() {
@@ -471,6 +452,7 @@ class CanvasVectorEditor {
     mouseMove(event) {
         let type = this.getControlType;
         let color = this.color;
+        const ctx = this.ctx;
 
         let positionBox = event.target.getBoundingClientRect();
         let canvasX = Math.round(event.clientX - positionBox.left);
