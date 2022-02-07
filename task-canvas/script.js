@@ -225,20 +225,20 @@ class CanvasVectorEditor {
     }
 
     initializeSubscriptions() {
-        this.canvas.addEventListener('mousedown', this.mouseDown.bind(this));
+        this.canvas.addEventListener('mousedown', this.mouseDown);
         this.canvas.addEventListener('mouseup', this.finishShape);
-        this.colorPicker.addEventListener("input", this.newColor.bind(this) );
-        this.colorPicker.addEventListener("change", this.watchColorPicker.bind(this) );
+        this.colorPicker.addEventListener("input", this.newColor);
+        this.colorPicker.addEventListener("change", this.watchColorPicker);
         this.remove.addEventListener("click", this.removeAll);
         window.addEventListener('beforeunload', this.closeWindowAndTab);
         window.addEventListener('load', this.loadWindow);
         this.savingPng.addEventListener('click', this.saveImagePng);
         this.impJson.addEventListener('click', this.importJson);
-        this.expJson.addEventListener('click', this.exporJson);
+        this.expJson.addEventListener('click', this.exportJson);
         this.savingSVG.addEventListener('click', this.saveImageSvg);
     }
 
-    mouseDown(event) {
+    mouseDown = (event) => {
         this.amountCoords = [];
         const positionBox = this.canvas.getBoundingClientRect();
         let canvasX = Math.round(event.clientX - positionBox.left);
@@ -315,7 +315,7 @@ class CanvasVectorEditor {
         localStorage.setItem('canvasPicture', savingFile);
     }
 
-    exporJson = () => {
+    exportJson = () => {
         let file = this.arrayOfShapes;
         let savingFile = JSON.stringify(file);
         let textarea = document.querySelector('.textarea-field');
@@ -363,13 +363,13 @@ class CanvasVectorEditor {
         }
     }
 
-    newColor(event) {
+    newColor = (event) => {
         this.color = event.target.value;
         let pallete = event.target.closest('.label-colors');
         pallete.style.backgroundColor = `${this.color}`;
     }
 
-    watchColorPicker(event) {
+    watchColorPicker = (event) => {
         this.color = event.target.value;
         if (this.getControlType() === "new"){
             this.movingShape.setColor(this.color);
@@ -418,7 +418,7 @@ class CanvasVectorEditor {
                 }
                 break;
             case "pencil":
-                shape = new BrokenLine(ctx, color, x, y, vx, vy);
+                new BrokenLine(ctx, color, x, y, vx, vy);
                 break;
             case "rectangle":
                 this.clear();
@@ -469,4 +469,8 @@ class CanvasVectorEditor {
     }
 }
 
-let goDrow = new CanvasVectorEditor();
+function createCanvasVectorEditor() {
+    return new CanvasVectorEditor();
+}
+
+createCanvasVectorEditor();
